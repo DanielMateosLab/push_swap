@@ -6,13 +6,54 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/18 16:48:35 by damateos         ###   ########.fr       */
+/*   Updated: 2024/08/23 22:38:28 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+Sorting algorithm: use merge sort.
+- In each iteration we switch the ordering direction.
+- We order the groups from top of stack to bottom.
+- We use rotations and pushes to sort the groups. Swaps are not used.
+- Because we only push in one direction, push time complexity is constant.
+- Using a circular buffer, we can also achieve constant complexity for rotations.
+
+5 3 8 6 5 6 1 8
+18 56 68 35
+8563 8651
+13556688
+*/
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
 # include "libft.h"
+
+typedef struct s_stack
+{
+	int		*stack;
+	int		size;
+	int		top;
+}	t_stack;
+
+/*
+ * Swap the first two elements of the given stack.
+ * Does nothing if there are less than two elements.
+ */
+void	stack_swap(t_stack *stack);
+/*
+ * Take the first element of stack2 and put it on top of stack1.
+ * Does nothing if stack2 is empty.
+ */
+void	stack_push(t_stack *stack1, t_stack *stack2);
+/*
+ * Rotate the stack upwards, moving the first element to the last position.
+ */
+void	stack_rotate(t_stack *stack);
+/*
+ * Reverse rotate the stack, moving the last element to the first position.
+ */
+void	stack_reverse_rotate(t_stack *stack);
+
 
 #endif

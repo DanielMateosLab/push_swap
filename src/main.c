@@ -6,11 +6,13 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/18 16:33:09 by damateos         ###   ########.fr       */
+/*   Updated: 2024/08/23 21:14:33 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main()
+#include "push_swap.h"
+
+int	main(int argc, char **argv)
 {
 	return (0);
 }
