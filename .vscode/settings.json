@@ -1,6 +1,15 @@
 {
   "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
   "files.associations": {
-    "push_swap.h": "c"
+    "*.h": "c",
+    "push_swap.h": "c",
+    "array": "cpp",
+    "bitset": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "regex": "cpp",
+    "utility": "cpp"
   }
 }

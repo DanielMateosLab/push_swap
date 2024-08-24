@@ -22,8 +22,8 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-class ExecutableTest : public ::testing::Test {
-protected:
+class ExecutableBase {
+	protected:
     std::string exec_path = "../../push_swap";
 
     std::string runExecutable(const std::string& args) {
@@ -32,96 +32,39 @@ protected:
     }
 };
 
+class ExecutableTest : public ::testing::Test, public ExecutableBase {};
+
 #define ASSERT_CONTAINS(haystack, needle) \
     EXPECT_NE(haystack.find(needle), std::string::npos) \
         << "Expected to find '" << needle << "' in:\n" << haystack
 
-TEST_F(ExecutableTest, NoArgs) {
-    std::string output = runExecutable("");
-    ASSERT_CONTAINS(output, ARGC_ERR);
+
+struct ParametersTestParams {
+    const char* args;
+    const char* expected_output;
+};
+
+class ParametersTest :
+	public ExecutableBase,
+	public ::testing::TestWithParam<ParametersTestParams>
+{};
+
+TEST_P(ParametersTest, Parameters) {
+	const auto& params = GetParam();
+	std::string output = runExecutable(params.args);
+	ASSERT_CONTAINS(output, params.expected_output);
 }
 
-TEST_F(ExecutableTest, TooManyArgs) {
-    std::string output = runExecutable("arg1 arg2");
-    ASSERT_CONTAINS(output, ARGC_ERR);
-}
-
-TEST_F(ExecutableTest, InvalidExtension) {
-    std::string output = runExecutable("invalid_extension.txt");
-    ASSERT_CONTAINS(output, FILE_EXT_ERR);
-}
-
-TEST_F(ExecutableTest, PathErr) {
-    std::string output = runExecutable("non_existing_map_path.ber");
-    ASSERT_CONTAINS(output, FILE_PATH_ERR);
-}
-
-TEST_F(ExecutableTest, EmptyMap) {
-	std::string output = runExecutable("../../maps/empty.ber");
-	ASSERT_CONTAINS(output, EMPTY_MAP_ERR);
-}
-
-TEST_F(ExecutableTest, NotRectangleMap) {
-	std::string output = runExecutable("../../maps/not_rectangle.ber");
-	ASSERT_CONTAINS(output, RECT_MAP_ERR);
-}
-
-TEST_F(ExecutableTest, ForbiddenComponent) {
-	std::string output = runExecutable("../../maps/forbidden_component.ber");
-	ASSERT_CONTAINS(output, COMPONENTS_ERR);
-}
-
-TEST_F(ExecutableTest, NotSurroundedByWalls1) {
-	std::string output = runExecutable("../../maps/not_surrounded_by_walls_1.ber");
-	ASSERT_CONTAINS(output, WALL_ERR);
-}
-
-TEST_F(ExecutableTest, NotSurroundedByWalls2) {
-	std::string output = runExecutable("../../maps/not_surrounded_by_walls_2.ber");
-	ASSERT_CONTAINS(output, WALL_ERR);
-}
-
-TEST_F(ExecutableTest, ManyEntries) {
-	std::string output = runExecutable("../../maps/many_entries.ber");
-	ASSERT_CONTAINS(output, INVALID_TILES_COUNT_ERR);
-}
-
-TEST_F(ExecutableTest, ManyExits) {
-	std::string output = runExecutable("../../maps/many_exits.ber");
-	ASSERT_CONTAINS(output, INVALID_TILES_COUNT_ERR);
-}
-
-TEST_F(ExecutableTest, MissingEntry) {
-	std::string output = runExecutable("../../maps/missing_entry.ber");
-	ASSERT_CONTAINS(output, INVALID_TILES_COUNT_ERR);
-}
-
-TEST_F(ExecutableTest, MissingExit) {
-	std::string output = runExecutable("../../maps/missing_exit.ber");
-	ASSERT_CONTAINS(output, INVALID_TILES_COUNT_ERR);
-}
-
-TEST_F(ExecutableTest, MissingCollectable) {
-	std::string output = runExecutable("../../maps/missing_collectable.ber");
-	ASSERT_CONTAINS(output, INVALID_TILES_COUNT_ERR);
-}
-
-TEST_F(ExecutableTest, NoExitPath1) {
-	std::string output = runExecutable("../../maps/no_exit_path_1.ber");
-	ASSERT_CONTAINS(output, PATH_ERR);
-}
-
-TEST_F(ExecutableTest, NoExitPath2) {
-	std::string output = runExecutable("../../maps/no_exit_path_2.ber");
-	ASSERT_CONTAINS(output, PATH_ERR);
-}
-
-TEST_F(ExecutableTest, BlockedExit) {
-	std::string output = runExecutable("../../maps/blocked_exit.ber");
-	ASSERT_CONTAINS(output, PATH_ERR);
-}
-
-TEST_F(ExecutableTest, BlockedCollectable) {
-	std::string output = runExecutable("../../maps/blocked_col.ber");
-	ASSERT_CONTAINS(output, PATH_ERR);
-}
+INSTANTIATE_TEST_SUITE_P(
+	ParametersTests,
+	ParametersTest,
+	::testing::Values(
+		ParametersTestParams{"", ""},
+		ParametersTestParams{"arg1 arg2", ""},
+		ParametersTestParams{"+9", ""},
+		ParametersTestParams{"20 9!", "Error. Invalid number\n"},
+		ParametersTestParams{"20 +9", "Error. Invalid number\n"},
+		ParametersTestParams{"20 --9", "Error. Invalid number\n"},
+		ParametersTestParams{"20 9-9", "Error. Invalid number\n"}
+	)
+);

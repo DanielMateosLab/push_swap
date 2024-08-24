@@ -15,6 +15,7 @@ MAKEFLAGS += j$(PROCS)
 
 NAME = push_swap
 BUILD_DIR = build
+TEST_OUT = test/build
 
 SRCS = src/main.c
 OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
@@ -46,8 +47,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
-
 deb: CFLAGS += -g3 -fsanitize=address
 deb: re
 
@@ -57,3 +56,11 @@ leaks: re
 # TODO automaticaly detect if it's mac or linux and run leaks or valgrind
 run_leaks_mac: leaks
 	leaks --atExit -q -- ./$(NAME)
+
+test:
+	mkdir -p $(TEST_OUT)
+	cd $(TEST_OUT) && cmake ..
+	+make -C $(TEST_OUT)
+	cd $(TEST_OUT) && ctest
+
+.PHONY: all clean fclean re deb leaks run_leaks_mac test

@@ -6,13 +6,54 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/23 21:14:33 by damateos         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:06:16 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+int	is_number_valid(char *number)
+{
+	if (*number == '-')
+		number++;
+	while (*number)
+	{
+		if (!ft_isdigit(*number))
+			return (0);
+		number++;
+	}
+	return (1);
+}
+
+int	are_numbers_valid(char **numbers)
+{
+	while (*numbers)
+	{
+		if (!is_number_valid(*numbers))
+			return (0);
+		numbers++;
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
+	char	**numbers;
+
+	if (argc < 2)
+		return (EXIT_FAILURE);
+	if (argc == 2)
+	{
+		if (ft_strlen(argv[1]) == 0)
+			return (EXIT_FAILURE);
+		numbers = ft_split(argv[1], ' ');
+	}
+	else
+	{
+		return (0);
+	}
+	if (!are_numbers_valid(numbers) || !str_array_len(numbers))
+		return (write(STDERR_FILENO, "Error. Invalid number\n", 23),
+			str_array_clear(numbers), EXIT_FAILURE);
 	return (0);
 }

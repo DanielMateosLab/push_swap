@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(push_swap_tests)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ### Set up GOOGLE TEST ###
@@ -22,20 +22,9 @@ enable_testing()
 ## Declare variables ##
 set(PARENT_DIR ${PROJECT_SOURCE_DIR}/..)
 set(LIBFT_DIR ${PARENT_DIR}/libs/libft)
-# Process number depending on the OS
-if(APPLE)
-	set(PROCESS_NUMBER "sysctl -n hw.ncpu")
-elseif(UNIX)
-	set(PROCESS_NUMBER "nproc")
-else()
-	set(PROCESS_NUMBER "1")
 
-## Include directories for tests ##
-# include_directories(
-# 	"${PARENT_DIR}/include"
-# 	"${LIBFT_DIR}/include"
-# )
-target_include_directories(push_swap_tests PRIVATE
+# Include directories for tests ##
+include_directories(
 	"${PARENT_DIR}/include"
 	"${LIBFT_DIR}/include"
 )
