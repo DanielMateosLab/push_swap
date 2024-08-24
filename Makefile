@@ -35,11 +35,11 @@ $(BUILD_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	make -C $(LIBFT_DIR) > /dev/null
+	+make -C $(LIBFT_DIR) > /dev/null
 
 clean:
 	rm -rf $(BUILD_DIR)
-	make -C $(LIBFT_DIR) fclean
+	+make -C $(LIBFT_DIR) fclean
 
 fclean: clean
 	rm -f $(NAME)
