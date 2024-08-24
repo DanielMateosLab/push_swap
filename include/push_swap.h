@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/23 22:38:28 by damateos         ###   ########.fr       */
+/*   Updated: 2024/08/24 10:03:55 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@ Sorting algorithm: use merge sort.
 
 # include "libft.h"
 
+/* Stack structure. If top is -1, the stack is empty */
 typedef struct s_stack
 {
-	int		*stack;
-	int		size;
-	int		top;
+	int	*stack;
+	int	capacity;
+	int	top;
+	int	base;
 }	t_stack;
 
 /*
@@ -42,7 +44,7 @@ typedef struct s_stack
  */
 void	stack_swap(t_stack *stack);
 /*
- * Take the first element of stack2 and put it on top of stack1.
+ * Take the first element of stack2 and put it on top of stack.
  * Does nothing if stack2 is empty.
  */
 void	stack_push(t_stack *stack1, t_stack *stack2);
