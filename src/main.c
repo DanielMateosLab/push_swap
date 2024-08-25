@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/25 11:15:15 by damateos         ###   ########.fr       */
+/*   Updated: 2024/08/25 11:57:14 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,14 @@ int	are_numbers_valid(char **numbers)
 	return (1);
 }
 
-void	print_array(char **array)
-{
-	while (*array)
-	{
-		ft_printf("%s\n", *array);
-		array++;
-	}
-}
-
-int	main(int argc, char **argv)
+/**
+ * Validates and parses the arguments.
+ * - If the arguments are invalid, prints Error\n to stderr and returns NULL.
+ * - If empty args or integers are already sorted,
+ * prints nothing and returns NULL.
+ * - If valid arguments and unsorted array, returns a stack with the integers.
+ */
+int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 {
 	char	**numbers;
 
@@ -62,5 +60,14 @@ int	main(int argc, char **argv)
 	if (!are_numbers_valid(numbers) || !str_array_len(numbers))
 		return (write(STDERR_FILENO, "Error\n", 6),
 			str_array_clear(numbers), EXIT_FAILURE);
-	return (0);
+	(void)stack;
+	return (EXIT_SUCCESS);
+}
+
+int	main(int argc, char **argv)
+{
+	t_stack	a;
+
+	if (parse_arguments_and_create_stack(argc, argv, &a) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 }
