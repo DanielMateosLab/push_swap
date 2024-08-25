@@ -61,6 +61,11 @@ test:
 	mkdir -p $(TEST_OUT)
 	cd $(TEST_OUT) && cmake ..
 	+make -C $(TEST_OUT)
-	cd $(TEST_OUT) && ctest
+	cd $(TEST_OUT) && ctest --output-on-failure
 
-.PHONY: all clean fclean re deb leaks run_leaks_mac test
+test_clean:
+	rm -rf $(TEST_OUT)
+
+test_re: test_clean test
+
+.PHONY: all clean fclean re deb leaks run_leaks_mac test test_clean test_re
