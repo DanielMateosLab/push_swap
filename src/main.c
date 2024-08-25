@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/24 20:06:16 by damateos         ###   ########.fr       */
+/*   Updated: 2024/08/25 11:15:15 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_number_valid(char *number)
 {
-	if (*number == '-')
+	if (*number == '-' || *number == '+')
 		number++;
 	while (*number)
 	{
@@ -36,6 +36,15 @@ int	are_numbers_valid(char **numbers)
 	return (1);
 }
 
+void	print_array(char **array)
+{
+	while (*array)
+	{
+		ft_printf("%s\n", *array);
+		array++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	char	**numbers;
@@ -49,11 +58,9 @@ int	main(int argc, char **argv)
 		numbers = ft_split(argv[1], ' ');
 	}
 	else
-	{
-		return (0);
-	}
+		numbers = str_array_copy_n(argv + 1, argc - 1);
 	if (!are_numbers_valid(numbers) || !str_array_len(numbers))
-		return (write(STDERR_FILENO, "Error. Invalid number\n", 23),
+		return (write(STDERR_FILENO, "Error\n", 6),
 			str_array_clear(numbers), EXIT_FAILURE);
 	return (0);
 }
