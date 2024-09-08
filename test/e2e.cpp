@@ -110,3 +110,11 @@ TEST_F(ParametersTest, InvalidDoubleNegative) {
 TEST_F(ParametersTest, InvalidNumberFormat) {
     RunTest("20 9-9", "", "Error\n");
 }
+
+TEST_F(ParametersTest, InvalidRepeatedNumber) {
+    RunTest("9 9", "", "Error\n");
+}
+
+TEST_F(ParametersTest, InvalidRepeatedNumber2) {
+    RunTest("-1 20 9 0 8 -4 3 2 7 -1", "", "Error\n");
+}

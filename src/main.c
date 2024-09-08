@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/25 11:57:14 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/08 19:41:34 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,31 @@ int	is_number_valid(char *number)
 
 int	are_numbers_valid(char **numbers)
 {
+	t_hashmap	*hm;
+	int			true;
+
+	true = 1;
+	hm = ft_hm_create(str_array_len(numbers));
 	while (*numbers)
 	{
-		if (!is_number_valid(*numbers))
+		if (ft_hm_get(hm, *numbers) || !is_number_valid(*numbers))
+		{
+			ft_hm_remove(hm);
 			return (0);
+		}
+		ft_hm_node_insert(hm, *numbers, &true, sizeof(int));
 		numbers++;
 	}
+	ft_hm_remove(hm);
 	return (1);
 }
 
 /**
- * Validates and parses the arguments.
- * - If the arguments are invalid, prints Error\n to stderr and returns NULL.
- * - If empty args or integers are already sorted,
- * prints nothing and returns NULL.
+ * Validates and parses the arguments. Returns boolean that indicates
+ * if an error occurred.
+ * - If the arguments are invalid, prints Error\n to stderr and returns
+ * EXIT_FAILURE.
+ * - If empty args prints nothing and returns EXIT_FAILURE.
  * - If valid arguments and unsorted array, returns a stack with the integers.
  */
 int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
@@ -60,6 +71,7 @@ int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 	if (!are_numbers_valid(numbers) || !str_array_len(numbers))
 		return (write(STDERR_FILENO, "Error\n", 6),
 			str_array_clear(numbers), EXIT_FAILURE);
+	// TODO: fix leaks e2e test
 	(void)stack;
 	return (EXIT_SUCCESS);
 }
