@@ -95,6 +95,14 @@ TEST_F(ParametersTest, SingleNegativeNumber) {
     RunTest("-9", "", "");
 }
 
+TEST_F(ParametersTest, MultipleSpacesSingleArgument) {
+    RunTest("\"     \"", "", "Error\n");
+}
+
+TEST_F(ParametersTest, MultipleEmptyArguments) {
+    RunTest("\"\" \"\" \"\"", "", "Error\n");
+}
+
 TEST_F(ParametersTest, InvalidArgument) {
     RunTest("1 arg2", "", "Error\n");
 }
