@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/08 19:41:34 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:24:52 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,28 @@ int	is_number_valid(char *number)
 	return (1);
 }
 
+// We add 1 to the size because the string might begin with a symbol
+int	is_number_in_int_range(char *number)
+{
+	int		max_length;
+	int		n;
+	long	number_as_long;
+
+	max_length = 1;
+	n = INT_MIN;
+	while (n != 0)
+	{
+		max_length++;
+		n /= 10;
+	}
+	if (ft_strlen(number) > (size_t)max_length)
+		return (0);
+	number_as_long = ft_atol(number);
+	if (number_as_long < INT_MIN || number_as_long > INT_MAX)
+		return (0);
+	return (1);
+}
+
 int	are_numbers_valid(char **numbers)
 {
 	t_hashmap	*hm;
@@ -34,7 +56,8 @@ int	are_numbers_valid(char **numbers)
 	hm = ft_hm_create(str_array_len(numbers));
 	while (*numbers)
 	{
-		if (ft_hm_get(hm, *numbers) || !is_number_valid(*numbers))
+		if (ft_hm_get(hm, *numbers) || !is_number_valid(*numbers)
+			|| !is_number_in_int_range(*numbers))
 		{
 			ft_hm_remove(hm);
 			return (0);
@@ -71,7 +94,6 @@ int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 	if (!are_numbers_valid(numbers) || !str_array_len(numbers))
 		return (write(STDERR_FILENO, "Error\n", 6),
 			str_array_clear(numbers), EXIT_FAILURE);
-	// TODO: fix leaks e2e test
 	(void)stack;
 	return (EXIT_SUCCESS);
 }

@@ -119,4 +119,18 @@ TEST_F(ParametersTest, InvalidRepeatedNumber2) {
     RunTest("-1 20 9 0 8 -4 3 2 7 -1", "", "Error\n");
 }
 
+TEST_F(ParametersTest, BiggerThanIntMax) {
+	std::string max_int_str = std::to_string((long)INT_MAX + 1);
+	RunTest(max_int_str, "", "Error\n");
+}
+
+TEST_F(ParametersTest, SmallerThanIntMin) {
+	std::string min_int_str = std::to_string((long)INT_MIN - 1);
+	RunTest(min_int_str, "", "Error\n");
+}
+
+TEST_F(ParametersTest, BigNumbers) {
+	RunTest("999 21474836472147483647", "", "Error\n");
+}
+
 // TODO: WARNING: leak tests don't work in e2e tests. leaks in child processes aren't detected.
