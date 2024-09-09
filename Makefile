@@ -17,7 +17,7 @@ NAME = push_swap
 BUILD_DIR = build
 TEST_OUT = test/build
 
-SRCS = src/main.c
+SRCS = src/main.c src/stack_lifecycle.c src/stack_operations.c
 OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
 HEADER = include/push_swap.h
 

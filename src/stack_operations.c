@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 21:39:58 by damateos          #+#    #+#             */
-/*   Updated: 2024/08/23 22:39:40 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:28:54 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ void	stack_push(t_stack *stack1, t_stack *stack2)
 
 void	stack_rotate(t_stack *stack)
 {
+	(void) stack;
 	return ;
 }
 
 void	stack_reverse_rotate(t_stack *stack)
 {
+	(void) stack;
 	return ;
 }

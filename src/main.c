@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/09 16:24:52 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:32:53 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,23 @@ int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 	if (!are_numbers_valid(numbers) || !str_array_len(numbers))
 		return (write(STDERR_FILENO, "Error\n", 6),
 			str_array_clear(numbers), EXIT_FAILURE);
-	(void)stack;
+	stack_init_from_nums(stack, numbers);
 	return (EXIT_SUCCESS);
 }
 
 int	main(int argc, char **argv)
 {
 	t_stack	a;
+	t_stack	b;
 
 	if (parse_arguments_and_create_stack(argc, argv, &a) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	stack_init_empty(&b, a.capacity);
+
+	// TODO: While stack a is not sorter, merge sort stack a and stack b
+	// No need to do anything special with sorted stacks, as operations
+	// array will be printed empty.
+
+	stack_destroy(&a);
+	stack_destroy(&b);
 }
