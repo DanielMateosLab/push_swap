@@ -118,3 +118,5 @@ TEST_F(ParametersTest, InvalidRepeatedNumber) {
 TEST_F(ParametersTest, InvalidRepeatedNumber2) {
     RunTest("-1 20 9 0 8 -4 3 2 7 -1", "", "Error\n");
 }
+
+// TODO: WARNING: leak tests don't work in e2e tests. leaks in child processes aren't detected.

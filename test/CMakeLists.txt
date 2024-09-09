@@ -89,5 +89,8 @@ foreach(file ${tests})
   		${LIBFT_DIR}/libft.a
 	)
 	add_test(NAME ${name} COMMAND "${name}_tests")
-	add_leak_test(${name} "${name}_tests")
+	# Add leak test if file name doesn't contain e2e
+	if(NOT ${file} MATCHES "e2e")
+		add_leak_test(${name} "${name}_tests")
+	endif()
 endforeach()
