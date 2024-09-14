@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/09 17:31:13 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:50:32 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_stack
 {
 	int		*stack;
 	size_t	capacity;
+	size_t	taken;
 	size_t	top;
 	size_t	base;
 }	t_stack;
@@ -44,8 +45,8 @@ typedef struct s_stack
  */
 void	stack_swap(t_stack *stack);
 /*
- * Take the first element of stack2 and put it on top of stack.
- * Does nothing if stack2 is empty.
+ * Take the first element of stack2 and put it on top of stack1.
+ * Does nothing if stack2 is empty or stack1 is full.
  */
 void	stack_push(t_stack *stack1, t_stack *stack2);
 /*

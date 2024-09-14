@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/09 17:32:53 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:37:42 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	stack_init_empty(&b, a.capacity);
 
-	// TODO: While stack a is not sorter, merge sort stack a and stack b
+	// TODO: While stack a is not sorted, merge sort stack a and stack b
 	// No need to do anything special with sorted stacks, as operations
 	// array will be printed empty.
 
