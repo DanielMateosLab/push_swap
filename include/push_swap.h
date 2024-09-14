@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/14 20:50:32 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/14 23:08:16 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ Sorting algorithm: use merge sort.
 
 # include "libft.h"
 
-/* Stack structure. If top is -1, the stack is empty */
 typedef struct s_stack
 {
 	int		*stack;
@@ -38,6 +37,18 @@ typedef struct s_stack
 	size_t	top;
 	size_t	base;
 }	t_stack;
+
+typedef enum e_direction
+{
+	PREV,
+	NEXT
+}	t_direction;
+
+typedef enum e_pointer
+{
+	BASE,
+	TOP
+}	t_pointer;
 
 /*
  * Swap the first two elements of the given stack.
@@ -60,5 +71,6 @@ void	stack_reverse_rotate(t_stack *stack);
 void	stack_init_from_nums(t_stack *stack, char **numbers);
 void	stack_destroy(t_stack *stack);
 void	stack_init_empty(t_stack *stack, int size);
+size_t	stack_index(t_stack *stack, size_t index, t_direction direction);
 
 #endif

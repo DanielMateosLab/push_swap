@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 21:39:58 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/14 20:58:45 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/14 23:17:46 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 void	stack_swap(t_stack *stack)
 {
-	if (stack->top < 1)
+	size_t	top_prev_index;
+
+	if (stack->taken < 2)
 		return ;
-	stack->stack[stack->top] ^= stack->stack[stack->top - 1];
-	stack->stack[stack->top - 1] ^= stack->stack[stack->top];
-	stack->stack[stack->top] ^= stack->stack[stack->top - 1];
+	top_prev_index = stack_index(stack, stack->top, PREV);
+	stack->stack[stack->top] ^= stack->stack[top_prev_index];
+	stack->stack[top_prev_index] ^= stack->stack[stack->top];
+	stack->stack[stack->top] ^= stack->stack[top_prev_index];
 }
 
 void	stack_push(t_stack *stack1, t_stack *stack2)
 {
 	if (stack2->taken == 0 || stack1->taken == stack1->capacity)
 		return ;
-	stack1->stack[++stack1->top] = stack2->stack[stack2->top--];
+	stack1->top = stack_index(stack1, stack1->top, NEXT);
+	stack1->stack[stack1->top] = stack2->stack[stack2->top];
+	stack2->top = stack_index(stack2, stack2->top, PREV);
+	stack1->taken++;
+	stack2->taken--;
 }
 
 /* REVERSE ROTATE example
@@ -49,16 +56,12 @@ void	stack_push(t_stack *stack1, t_stack *stack2)
  */
 void	stack_rotate(t_stack *stack)
 {
-	size_t	new_pos;
-
-	if (--stack->top < 0)
-		stack->top = stack->taken - 1;
-	if (--stack->base < 0)
-		stack->base = stack->taken - 1;
+	stack->top = stack_index(stack, stack->top, PREV);
+	stack->base = stack_index(stack, stack->base, PREV);
 }
 
 void	stack_reverse_rotate(t_stack *stack)
 {
-	stack->top = (stack->top + 1) % stack->taken;
-	stack->base = (stack->base + 1) % stack->taken;
+	stack->top = stack_index(stack, stack->top, NEXT);
+	stack->base = stack_index(stack, stack->base, NEXT);
 }
