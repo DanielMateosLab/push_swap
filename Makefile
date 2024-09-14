@@ -1,18 +1,6 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude -Ilibs/libft/include
 
-# Set process number depending if it's mac or linux OS, rest default to 1
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-	PROCS := $(shell nproc)
-else ifeq ($(UNAME_S),Darwin)
-	PROCS := $(shell sysctl -n hw.ncpu)
-else
-	PROCS := 1
-endif
-MAKEFLAGS += j$(PROCS)
-
-
 NAME = push_swap
 BUILD_DIR = build
 TEST_OUT = test/build
