@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/20 19:52:57 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/20 22:11:25 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,34 +97,42 @@ int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 	stack_init_from_nums(stack, numbers);
 	return (EXIT_SUCCESS);
 }
-/*
-a ___
-b 123
 
-a 321 213
-b ___
+void	merge_groups(t_stack *from, t_stack *to,
+			size_t group_size, int uneven_pos)
+{
 
-a ___
-b 123
-*/
+}
 
 void	merge_sort(t_stack *a, t_stack *b)
 {
-	t_uneven_pos	uneven_pos;
+	int				uneven_pos;
 	size_t			group_size;
-	// t_stack			from_stack;
-	// t_stack			to_stack;
+	t_stack			*from_stack;
+	t_stack			*to_stack;
+	t_stack			*tmp_stack;
 
 	if (a->capacity % 2 == 0)
-		uneven_pos = NONE;
+		uneven_pos = 0;
 	else
-		uneven_pos = LAST;
+		uneven_pos = -1;
 	group_size = 2;
-	(void)group_size;
-	(void)uneven_pos;
-	(void)a;
-	(void)b;
+	from_stack = a;
+	to_stack = b;
+	while (!stack_is_sorted(&from_stack))
+	{
+		merge_groups(from_stack, to_stack, group_size, uneven_pos);
+		group_size *= 2;
+		if (group_size > from_stack->capacity)
+			group_size = from_stack->capacity;
+		if (uneven_pos != 0)
+			uneven_pos *= -1;
+		tmp_stack = from_stack;
+		from_stack = to_stack;
+		to_stack = tmp_stack;
+	}
 }
+/* TODO: When reversing a stack order, loop with rotate + push*/
 
 int	main(int argc, char **argv)
 {

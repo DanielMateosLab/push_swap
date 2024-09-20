@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/20 19:42:59 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/20 22:06:23 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,6 @@ typedef enum e_pointer
 	BASE,
 	TOP
 }	t_pointer;
-
-typedef enum e_uneven_pos
-{
-	FIRST,
-	LAST,
-	NONE
-}	t_uneven_pos;
 
 /*
  * Swap the first two elements of the given stack.
