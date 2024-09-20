@@ -6,15 +6,26 @@ extern "C" {
 #include "push_swap.h"
 }
 
-std::string stack_to_string(const t_stack& stack) {
-    std::string result;
-    for (int i = stack.base; i <= stack.top; i++) {
-        result += std::to_string(stack.stack[i]);
-        if (i < stack.top) {
-            result += " ";
-        }
-    }
-    return result;
+char	*stack_to_string(t_stack *stack)
+{
+	char	*result;
+	size_t	i;
+	char	*num_str;
+
+	result = ft_strdup("");
+	i = stack->base;
+	while (i != stack->top)
+	{
+		num_str = ft_itoa(stack->stack[i]);
+		result = ft_strjoin(result, num_str);
+		free(num_str);
+		result = ft_strjoin(result, " ");
+		i = stack_index(stack, i, NEXT);
+	}
+	num_str = ft_itoa(stack->stack[stack->top]);
+	result = ft_strjoin(result, num_str);
+	free(num_str);
+	return (result);
 }
 
 class StackTest : public ::testing::Test {
@@ -31,7 +42,7 @@ protected:
 TEST_F(StackTest, StackInitEmpty) {
 	stack_init_empty(&a, 10);
 
-	ASSERT_EQ(a.top, -1);
+	ASSERT_EQ(a.top, 0);
 	ASSERT_EQ(a.base, 0);
 	ASSERT_EQ(a.taken, 0);
 	ASSERT_EQ(a.capacity, 10);
@@ -39,10 +50,13 @@ TEST_F(StackTest, StackInitEmpty) {
 
 TEST_F(StackTest, StackInitFromNumbers) {
 	char **numbers = ft_split("5 4 3 2 1", ' ');
+	char *str_stack;
 
-	stack_init_from_nums(&a, (char **)numbers);
-	ASSERT_EQ(stack_to_string(a), "1 2 3 4 5");
+	stack_init_from_nums(&a, numbers);
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "1 2 3 4 5");
 
+	free(str_stack);
 	str_array_clear(numbers);
 }
 
@@ -81,22 +95,66 @@ TEST_F(StackTest, Push) {
 	char **numbers = ft_split("1 2", ' ');
 
 	stack_init_from_nums(&a, (char **)numbers);
-	stack_push(&a, &b);
+	stack_init_empty(&b, 2);
+	stack_push(&b, &a);
 
 	ASSERT_EQ(a.stack[a.top], 2);
 	ASSERT_EQ(b.stack[b.top], 1);
+
+	str_array_clear(numbers);
 }
 
 TEST_F(StackTest, Rotate) {
 	char **numbers = ft_split("1 2 3", ' ');
+	char *str_stack;
 
-	stack_init_from_nums(&a, (char **)numbers);
+	stack_init_from_nums(&a, numbers);
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "3 2 1");
+	free(str_stack);
+
 	stack_rotate(&a);
-	ASSERT_EQ(stack_to_string(a), "3 1 2");
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "2 1 3");
+	free(str_stack);
+
 	stack_rotate(&a);
-	ASSERT_EQ(stack_to_string(a), "2 3 1");
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "1 3 2");
+	free(str_stack);
+
 	stack_rotate(&a);
-	ASSERT_EQ(stack_to_string(a), "1 2 3");
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "3 2 1");
+	free(str_stack);
+
+	str_array_clear(numbers);
+
+}
+
+TEST_F(StackTest, ReverseRotate) {
+	char **numbers = ft_split("1 2 3", ' ');
+	char *str_stack;
+
+	stack_init_from_nums(&a, numbers);
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "3 2 1");
+	free(str_stack);
+
+	stack_reverse_rotate(&a);
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "1 3 2");
+	free(str_stack);
+
+	stack_reverse_rotate(&a);
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "2 1 3");
+	free(str_stack);
+
+	stack_reverse_rotate(&a);
+	str_stack = stack_to_string(&a);
+	ASSERT_STREQ(str_stack, "3 2 1");
+	free(str_stack);
 
 	str_array_clear(numbers);
 }

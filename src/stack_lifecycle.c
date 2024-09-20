@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 10:44:20 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/14 22:31:04 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/20 20:11:39 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	stack_init_from_nums(t_stack *stack, char **numbers)
 void	stack_init_empty(t_stack *stack, int size)
 {
 	stack->stack = (int *)malloc(sizeof(int) * size);
-	stack->top = -1;
+	stack->top = 0;
 	stack->capacity = size;
 	stack->taken = 0;
 	stack->base = 0;
