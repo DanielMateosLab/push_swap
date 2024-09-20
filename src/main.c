@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/14 19:37:42 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:52:57 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,20 +97,44 @@ int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 	stack_init_from_nums(stack, numbers);
 	return (EXIT_SUCCESS);
 }
+/*
+a ___
+b 123
+
+a 321 213
+b ___
+
+a ___
+b 123
+*/
+
+void	merge_sort(t_stack *a, t_stack *b)
+{
+	t_uneven_pos	uneven_pos;
+	size_t			group_size;
+	// t_stack			from_stack;
+	// t_stack			to_stack;
+
+	if (a->capacity % 2 == 0)
+		uneven_pos = NONE;
+	else
+		uneven_pos = LAST;
+	group_size = 2;
+	(void)group_size;
+	(void)uneven_pos;
+	(void)a;
+	(void)b;
+}
 
 int	main(int argc, char **argv)
 {
-	t_stack	a;
-	t_stack	b;
+	t_stack		a;
+	t_stack		b;
 
 	if (parse_arguments_and_create_stack(argc, argv, &a) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	stack_init_empty(&b, a.capacity);
-
-	// TODO: While stack a is not sorted, merge sort stack a and stack b
-	// No need to do anything special with sorted stacks, as operations
-	// array will be printed empty.
-
+	merge_sort(&a, &b);
 	stack_destroy(&a);
 	stack_destroy(&b);
 }

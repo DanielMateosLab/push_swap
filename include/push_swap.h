@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/14 23:08:16 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:42:59 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ Sorting algorithm: use merge sort.
 18 56 68 35
 8563 8651
 13556688
+--------------------------
+For uneven groups: register werther the uneven group is at the beginning or end.
+When calculating the group size, substract one for the first or last group.
+5 3 8 7 1 2 6
+26 17 38 5
+358 1267
+...
 */
 
 #ifndef PUSH_SWAP_H
@@ -50,6 +57,13 @@ typedef enum e_pointer
 	TOP
 }	t_pointer;
 
+typedef enum e_uneven_pos
+{
+	FIRST,
+	LAST,
+	NONE
+}	t_uneven_pos;
+
 /*
  * Swap the first two elements of the given stack.
  * Does nothing if there are less than two elements.
@@ -72,5 +86,6 @@ void	stack_init_from_nums(t_stack *stack, char **numbers);
 void	stack_destroy(t_stack *stack);
 void	stack_init_empty(t_stack *stack, int size);
 size_t	stack_index(t_stack *stack, size_t index, t_direction direction);
+int		stack_is_sorted(t_stack *stack);
 
 #endif
