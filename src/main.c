@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/21 16:41:15 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:57:47 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_list	*append_action(t_generic_action action, char from_name, t_list **moves)
 	return (*moves);
 }
 
-int	stack_index_relative_to_top(t_stack *stack, int number)
+int	find_top_relative_index(t_stack *stack, int number)
 {
 	int	i;
 
@@ -155,7 +155,7 @@ int	stack_index_relative_to_top(t_stack *stack, int number)
 	return (0);
 }
 
-void	sort_group(t_stack *from, t_stack *to, size_t group_size, int sort_order)
+void	sort_group(t_sort_state *ss, size_t grp_size)
 {
 	int		*nums;
 	size_t	i;
@@ -163,45 +163,63 @@ void	sort_group(t_stack *from, t_stack *to, size_t group_size, int sort_order)
 	// if positive, we have to rotate
 	int		relative_i;
 
-	nums = (int *)ft_calloc(group_size, sizeof(int));
+	nums = (int *)ft_calloc(grp_size, sizeof(int));
 	if (!nums)
 		return (free(nums), exit(EXIT_FAILURE));
 	i = 0;
-	while (i < group_size)
+	while (i < grp_size)
 	{
-		nums[i] = from->stack[stack_index_n(from, from->top, PREV, i)];
+		nums[i] = ss->from_s->stack[
+			stack_index_n(ss->from_s, ss->from_s->top, PREV, i)];
 		i++;
 	}
-	ft_quick_sort(nums, 0, group_size - 1);
-	if (sort_order == -1)
-		ft_reverse_order(nums, 0, group_size - 1);
+	ft_quick_sort(nums, 0, grp_size - 1);
+	if (ss->sort_order == -1)
+		ft_reverse_order(nums, 0, grp_size - 1);
 	i = 0;
-	while (i < group_size)
+	while (i < grp_size)
 	{
 		// 1. Find the index of the number in the original stack relative to the top
-		relative_i = stack_index_relative_to_top(from, nums[i]);
+		relative_i = find_top_relative_index(ss->from_s, nums[i]);
 		// 2. Rotate or reverse rotate the stack to put the number on top
+		while (relative_i != 0)
+		{
+			if (relative_i > 0)
+			{
+				append_action(R, ss->from_s->name, &ss->moves);
+				stack_rotate(ss->from_s);
+				relative_i--;
+			}
+			else
+			{
+				append_action(RR, ss->from_s->name, &ss->moves);
+				stack_reverse_rotate(ss->from_s);
+				relative_i++;
+			}
+		}
 		// 3. Push the number to the destination stack
+		append_action(P, ss->from_s->name, &ss->moves);
+		stack_push(ss->to_s, ss->from_s);
 	}
 	free(nums);
 }
 
-void	merge_groups(t_sort_state *ss)
+void	merge_groups_adjusting_grp_size(t_sort_state *ss, size_t grp_size)
 {
 	size_t	group_count;
 	size_t	i;
 
-	group_count = ss->from_s->taken / ss->grp_size
-		+ (ss->from_s->taken % ss->grp_size != 0);
+	group_count = ss->from_s->taken / grp_size
+		+ (ss->from_s->taken % grp_size != 0);
 	i = 0;
 	while (i < group_count)
 	{
 		if (i == 0 && ss->uneven_pos == -1)
-			sort_group(ss->from_s, ss->to_s, ss->grp_size - 1, ss->sort_order);
+			sort_group(ss, grp_size - 1);
 		else if (i == group_count - 1 && ss->uneven_pos == 1)
-			sort_group(ss->from_s, ss->to_s, ss->grp_size - 1, ss->sort_order);
+			sort_group(ss, grp_size - 1);
 		else
-			sort_group(ss->from_s, ss->to_s, ss->grp_size, ss->sort_order);
+			sort_group(ss, grp_size);
 		i++;
 	}
 }
@@ -212,7 +230,6 @@ void	init_sort_state(t_sort_state *ss, t_stack *a, t_stack *b)
 		ss->uneven_pos = 0;
 	else
 		ss->uneven_pos = -1;
-	ss->grp_size = 2;
 	ss->from_s = a;
 	ss->to_s = b;
 	ss->sort_order = 1;
@@ -222,14 +239,16 @@ t_list	*merge_sort(t_stack *a, t_stack *b)
 {
 	t_sort_state	ss;
 	t_stack			*tmp_stack;
+	size_t			grp_size;
 
 	init_sort_state(&ss, a, b);
+	grp_size = 2;
 	while (!stack_is_sorted(ss.from_s))
 	{
-		merge_groups(&ss);
-		ss.grp_size *= 2;
-		if (ss.grp_size > ss.from_s->capacity)
-			ss.grp_size = ss.from_s->capacity;
+		merge_groups_adjusting_grp_size(&ss, grp_size);
+		grp_size *= 2;
+		if (grp_size > ss.from_s->capacity)
+			grp_size = ss.from_s->capacity;
 		if (ss.uneven_pos != 0)
 			ss.uneven_pos *= -1;
 		tmp_stack = ss.from_s;

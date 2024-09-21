@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/21 16:41:04 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:47:30 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ typedef enum e_action
 typedef struct s_sort_state
 {
 	int				uneven_pos;
-	size_t			grp_size;
 	t_stack			*from_s;
 	t_stack			*to_s;
 	int				sort_order;
