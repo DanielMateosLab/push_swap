@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/20 22:06:23 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:41:04 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_stack
 	size_t	taken;
 	size_t	top;
 	size_t	base;
+	char	name;
 }	t_stack;
 
 typedef enum e_direction
@@ -56,6 +57,33 @@ typedef enum e_pointer
 	BASE,
 	TOP
 }	t_pointer;
+
+typedef enum e_generic_action
+{
+	R,
+	RR,
+	P
+}	t_generic_action;
+
+typedef enum e_action
+{
+	RA,
+	RB,
+	RRA,
+	RRB,
+	PA,
+	PB
+}	t_action;
+
+typedef struct s_sort_state
+{
+	int				uneven_pos;
+	size_t			grp_size;
+	t_stack			*from_s;
+	t_stack			*to_s;
+	int				sort_order;
+	t_list			*moves;
+}	t_sort_state;
 
 /*
  * Swap the first two elements of the given stack.
@@ -80,5 +108,7 @@ void	stack_destroy(t_stack *stack);
 void	stack_init_empty(t_stack *stack, int size);
 size_t	stack_index(t_stack *stack, size_t index, t_direction direction);
 int		stack_is_sorted(t_stack *stack);
+size_t	stack_index_n(t_stack *stack, size_t index,
+			t_direction direction, size_t count);
 
 #endif

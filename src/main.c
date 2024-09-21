@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/20 22:11:25 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:41:15 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,39 +98,147 @@ int	parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack)
 	return (EXIT_SUCCESS);
 }
 
-void	merge_groups(t_stack *from, t_stack *to,
-			size_t group_size, int uneven_pos)
+t_action	generic_to_named_action(t_generic_action action, char from_name)
 {
+	t_action	named_action;
 
+	if (from_name == 'a')
+	{
+		if (action == R)
+			named_action = RA;
+		else if (action == RR)
+			named_action = RRA;
+		else if (action == P)
+			named_action = PB;
+	}
+	else
+	{
+		if (action == R)
+			named_action = RB;
+		else if (action == RR)
+			named_action = RRB;
+		else if (action == P)
+			named_action = PA;
+	}
+	return (named_action);
 }
 
-void	merge_sort(t_stack *a, t_stack *b)
+t_list	*append_action(t_generic_action action, char from_name, t_list **moves)
 {
-	int				uneven_pos;
-	size_t			group_size;
-	t_stack			*from_stack;
-	t_stack			*to_stack;
+	t_action	named_action;
+	t_list		*new_move;
+
+	named_action = generic_to_named_action(action, from_name);
+	new_move = ft_lstnew(named_action);
+	if (!new_move)
+		return (ft_lstclear(moves, free), NULL);
+	if (!*moves)
+		*moves = new_move;
+	else
+		ft_lstadd_back(moves, new_move);
+	return (*moves);
+}
+
+int	stack_index_relative_to_top(t_stack *stack, int number)
+{
+	int	i;
+
+	i = 0;
+	while (i < stack->taken)
+	{
+		if (stack->stack[stack_index_n(stack, stack->top, PREV, i)] == number)
+			return (i * -1);
+		if (stack->stack[stack_index_n(stack, stack->top, NEXT, i)] == number)
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+void	sort_group(t_stack *from, t_stack *to, size_t group_size, int sort_order)
+{
+	int		*nums;
+	size_t	i;
+	// if relative_i is negative, we have to reverse rotate,
+	// if positive, we have to rotate
+	int		relative_i;
+
+	nums = (int *)ft_calloc(group_size, sizeof(int));
+	if (!nums)
+		return (free(nums), exit(EXIT_FAILURE));
+	i = 0;
+	while (i < group_size)
+	{
+		nums[i] = from->stack[stack_index_n(from, from->top, PREV, i)];
+		i++;
+	}
+	ft_quick_sort(nums, 0, group_size - 1);
+	if (sort_order == -1)
+		ft_reverse_order(nums, 0, group_size - 1);
+	i = 0;
+	while (i < group_size)
+	{
+		// 1. Find the index of the number in the original stack relative to the top
+		relative_i = stack_index_relative_to_top(from, nums[i]);
+		// 2. Rotate or reverse rotate the stack to put the number on top
+		// 3. Push the number to the destination stack
+	}
+	free(nums);
+}
+
+void	merge_groups(t_sort_state *ss)
+{
+	size_t	group_count;
+	size_t	i;
+
+	group_count = ss->from_s->taken / ss->grp_size
+		+ (ss->from_s->taken % ss->grp_size != 0);
+	i = 0;
+	while (i < group_count)
+	{
+		if (i == 0 && ss->uneven_pos == -1)
+			sort_group(ss->from_s, ss->to_s, ss->grp_size - 1, ss->sort_order);
+		else if (i == group_count - 1 && ss->uneven_pos == 1)
+			sort_group(ss->from_s, ss->to_s, ss->grp_size - 1, ss->sort_order);
+		else
+			sort_group(ss->from_s, ss->to_s, ss->grp_size, ss->sort_order);
+		i++;
+	}
+}
+
+void	init_sort_state(t_sort_state *ss, t_stack *a, t_stack *b)
+{
+	if (a->capacity % 2 == 0)
+		ss->uneven_pos = 0;
+	else
+		ss->uneven_pos = -1;
+	ss->grp_size = 2;
+	ss->from_s = a;
+	ss->to_s = b;
+	ss->sort_order = 1;
+}
+
+t_list	*merge_sort(t_stack *a, t_stack *b)
+{
+	t_sort_state	ss;
 	t_stack			*tmp_stack;
 
-	if (a->capacity % 2 == 0)
-		uneven_pos = 0;
-	else
-		uneven_pos = -1;
-	group_size = 2;
-	from_stack = a;
-	to_stack = b;
-	while (!stack_is_sorted(&from_stack))
+	init_sort_state(&ss, a, b);
+	while (!stack_is_sorted(ss.from_s))
 	{
-		merge_groups(from_stack, to_stack, group_size, uneven_pos);
-		group_size *= 2;
-		if (group_size > from_stack->capacity)
-			group_size = from_stack->capacity;
-		if (uneven_pos != 0)
-			uneven_pos *= -1;
-		tmp_stack = from_stack;
-		from_stack = to_stack;
-		to_stack = tmp_stack;
+		merge_groups(&ss);
+		ss.grp_size *= 2;
+		if (ss.grp_size > ss.from_s->capacity)
+			ss.grp_size = ss.from_s->capacity;
+		if (ss.uneven_pos != 0)
+			ss.uneven_pos *= -1;
+		tmp_stack = ss.from_s;
+		ss.from_s = ss.to_s;
+		ss.to_s = tmp_stack;
+		ss.sort_order *= -1;
+
 	}
+	return (ss.moves);
 }
 /* TODO: When reversing a stack order, loop with rotate + push*/
 
@@ -138,11 +246,14 @@ int	main(int argc, char **argv)
 {
 	t_stack		a;
 	t_stack		b;
+	t_list		*moves;
 
 	if (parse_arguments_and_create_stack(argc, argv, &a) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	stack_init_empty(&b, a.capacity);
-	merge_sort(&a, &b);
+	a.name = 'a';
+	b.name = 'b';
+	moves = merge_sort(&a, &b);
 	stack_destroy(&a);
 	stack_destroy(&b);
 }
