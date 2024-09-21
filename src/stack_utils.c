@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/20 20:34:32 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:19:55 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,19 @@
 size_t	stack_index(t_stack *stack, size_t index, t_direction direction)
 {
 	if (direction == PREV)
-	{
-		if (index == 0)
-			index = stack->taken - 1;
-		else
-			index--;
-	}
+		index = (index + stack->taken - 1) % stack->taken;
 	else
 		index = (index + 1) % stack->taken;
+	return (index);
+}
+
+size_t	stack_index_n(t_stack *stack, size_t index,
+		t_direction direction, size_t n)
+{
+	if (direction == PREV)
+		index = (index + stack->taken - n) % stack->taken;
+	else
+		index = (index + n) % stack->taken;
 	return (index);
 }
 
