@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/21 16:47:30 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:23:35 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,22 @@ When calculating the group size, substract one for the first or last group.
 
 # include "libft.h"
 
+// typedef struct s_stack
+// {
+// 	int		*stack;
+// 	size_t	capacity;
+// 	size_t	taken;
+// 	size_t	top;
+// 	size_t	base;
+// 	char	name;
+// }	t_stack;
+
 typedef struct s_stack
 {
-	int		*stack;
-	size_t	capacity;
-	size_t	taken;
-	size_t	top;
-	size_t	base;
-	char	name;
+	t_bi_list	*top;
+	t_bi_list	*base;
+	size_t		size;
+	char		name;
 }	t_stack;
 
 typedef enum e_direction
@@ -91,7 +99,6 @@ typedef struct s_sort_state
 void	stack_swap(t_stack *stack);
 /*
  * Take the first element of stack2 and put it on top of stack1.
- * Does nothing if stack2 is empty or stack1 is full.
  */
 void	stack_push(t_stack *stack1, t_stack *stack2);
 /*
@@ -104,10 +111,7 @@ void	stack_rotate(t_stack *stack);
 void	stack_reverse_rotate(t_stack *stack);
 void	stack_init_from_nums(t_stack *stack, char **numbers);
 void	stack_destroy(t_stack *stack);
-void	stack_init_empty(t_stack *stack, int size);
-size_t	stack_index(t_stack *stack, size_t index, t_direction direction);
 int		stack_is_sorted(t_stack *stack);
-size_t	stack_index_n(t_stack *stack, size_t index,
-			t_direction direction, size_t count);
+char	*stack_to_string(t_stack *stack, int order);
 
 #endif

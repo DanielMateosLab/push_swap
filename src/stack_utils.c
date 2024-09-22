@@ -6,71 +6,65 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/21 14:19:55 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:20:07 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-size_t	stack_index(t_stack *stack, size_t index, t_direction direction)
+char	*stack_to_string(t_stack *stack, int order)
 {
-	if (direction == PREV)
-		index = (index + stack->taken - 1) % stack->taken;
+	char			*result;
+	t_bi_list		*i;
+	char			*num_str;
+
+	result = ft_strdup("");
+	if (order == 1)
+		i = stack->base;
 	else
-		index = (index + 1) % stack->taken;
-	return (index);
-}
-
-size_t	stack_index_n(t_stack *stack, size_t index,
-		t_direction direction, size_t n)
-{
-	if (direction == PREV)
-		index = (index + stack->taken - n) % stack->taken;
-	else
-		index = (index + n) % stack->taken;
-	return (index);
-}
-
-void	stack_print(t_stack *s)
-{
-	size_t	i;
-
-	i = s->top;
-	ft_printf("-----\ntop: %d\nbase: %d\ntaken: %d\ncapacity: %d\n-----\n",
-		(int)i, (int)s->base, (int)s->taken, (int)s->capacity);
-	while (i != s->base)
+		i = stack->top;
+	while (i)
 	{
-		ft_printf("%d\n", s->stack[i]);
-		if (i == 0)
-		{
-			i = s->taken - 1;
-			continue ;
-		}
+		num_str = ft_itoa(*(int *)i->content);
+		result = ft_strjoin(result, num_str);
+		free(num_str);
+		result = ft_strjoin(result, " ");
+		if (order == 1)
+			i = i->next;
 		else
-			i--;
+			i = i->prev;
 	}
+	return (result);
+}
+
+void	stack_print(t_stack *s, int order)
+{
+	char	*str_stack;
+
+	ft_printf("-----\nstack: %c\nsize: %d\n-----\n", s->name, s->size);
+	str_stack = stack_to_string(s, order);
+	ft_printf("%s\n", str_stack);
+	free(str_stack);
 	ft_printf("-----\n");
 }
 
 int	stack_is_sorted(t_stack *s)
 {
-	size_t	i;
+	t_bi_list	*i;
 
 	i = s->top;
-	while (i != s->base)
+	while (i->prev)
 	{
-		if (s->stack[i] > s->stack[i - 1])
+		if (i->content > i->prev->content)
 			break ;
-		i--;
+		i = i->prev;
 	}
-	if (i == s->base)
-		return (1);
 	i = s->top;
-	while (i != s->base)
+	while (i->prev)
 	{
-		if (s->stack[i] < s->stack[i - 1])
+		if (i->content < i->prev->content)
 			return (0);
-		i--;
+		i = i->prev;
 	}
 	return (1);
 }

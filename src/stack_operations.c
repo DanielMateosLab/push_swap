@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 21:39:58 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/20 21:04:19 by damateos         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:41:55 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,63 @@
 
 void	stack_swap(t_stack *stack)
 {
-	size_t	top_prev_index;
+	t_bi_list	*first;
+	t_bi_list	*second;
+	t_bi_list	*third;
 
-	if (stack->taken < 2)
+	if (stack->size < 2)
 		return ;
-	top_prev_index = stack_index(stack, stack->top, PREV);
-	stack->stack[stack->top] ^= stack->stack[top_prev_index];
-	stack->stack[top_prev_index] ^= stack->stack[stack->top];
-	stack->stack[stack->top] ^= stack->stack[top_prev_index];
+	first = stack->top->prev;
+	second = stack->top;
+	third = first->prev;
+	if (third)
+	{
+		third->next = second;
+		second->prev = third;
+	}
+	else
+	{
+		second->prev = NULL;
+		stack->base = second;
+	}
+	second->next = first;
+	first->prev = second;
+	first->next = NULL;
+	stack->top = first;
 }
 
 void	stack_push(t_stack *stack1, t_stack *stack2)
 {
-	if (stack2->taken == 0 || stack1->taken == stack1->capacity)
+	t_bi_list	*stack1_new_top;
+
+	if (stack2->size == 0)
 		return ;
-	stack1->top = stack_index(stack1, stack1->top, NEXT);
-	stack1->stack[stack1->top] = stack2->stack[stack2->top];
-	stack2->top = stack_index(stack2, stack2->top, PREV);
-	stack1->taken++;
-	stack2->taken--;
+	stack1->size++;
+	stack2->size--;
+	stack1_new_top = stack2->top;
+	if (!stack2->size)
+	{
+		stack2->base = NULL;
+		stack2->top = NULL;
+	}
+	else
+	{
+		stack2->top->prev->next = NULL;
+		stack2->top = stack2->top->prev;
+	}
+	if (stack1->size == 1)
+	{
+		stack1->base = stack1_new_top;
+		stack1->top = stack1_new_top;
+		stack1_new_top->prev = NULL;
+		stack1_new_top->next = NULL;
+	}
+	else
+	{
+		stack1->top->next = stack1_new_top;
+		stack1_new_top->prev = stack1->top;
+		stack1->top = stack1_new_top;
+	}
 }
 
 /* ROTATE example
@@ -56,12 +94,26 @@ void	stack_push(t_stack *stack1, t_stack *stack2)
  */
 void	stack_rotate(t_stack *stack)
 {
-	stack->top = stack_index(stack, stack->top, NEXT);
-	stack->base = stack_index(stack, stack->base, NEXT);
+	t_bi_list	*new_base;
+
+	new_base = stack->top;
+	stack->top = stack->top->prev;
+	stack->top->next = NULL;
+	new_base->next = stack->base;
+	new_base->prev = NULL;
+	stack->base->prev = new_base;
+	stack->base = new_base;
 }
 
 void	stack_reverse_rotate(t_stack *stack)
 {
-	stack->top = stack_index(stack, stack->top, PREV);
-	stack->base = stack_index(stack, stack->base, PREV);
+	t_bi_list	*new_top;
+
+	new_top = stack->base;
+	stack->base = stack->base->next;
+	stack->base->prev = NULL;
+	new_top->next = NULL;
+	new_top->prev = stack->top;
+	stack->top->next = new_top;
+	stack->top = new_top;
 }
