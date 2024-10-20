@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/22 17:19:02 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:39:12 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,14 @@ t_action	generic_to_named_action(t_generic_action action, char from_name)
 
 t_list	*append_action(t_generic_action action, char from_name, t_list **moves)
 {
-	t_action	named_action;
+	t_action	*named_action;
 	t_list		*new_move;
 
-	named_action = generic_to_named_action(action, from_name);
-	new_move = ft_lstnew((void *)&named_action);
+	named_action = (t_action *)ft_calloc(1, sizeof(t_action));
+	if (!named_action)
+		return (ft_lstclear(moves, free), NULL);
+	*named_action = generic_to_named_action(action, from_name);
+	new_move = ft_lstnew((void *)named_action);
 	if (!new_move)
 		return (ft_lstclear(moves, free), NULL);
 	if (!*moves)
@@ -147,14 +150,16 @@ int	find_top_relative_index(t_stack *stack, int number)
 
 	to_prev_i = 0;
 	i = stack->top;
-	while (*(int *)i->content != number && i->prev)
+	if (i->content == number)
+		return (0);
+	while (i->content != number && i->prev)
 	{
 		i = i->prev;
 		to_prev_i++;
 	}
 	to_next_i = 1;
 	i = stack->base;
-	while (*(int *)i->content != number && i->next)
+	while (i->content != number && i->next)
 	{
 		i = i->next;
 		to_next_i++;
@@ -180,7 +185,7 @@ void	sort_group(t_sort_state *ss, size_t grp_size)
 	node = ss->from_s->top;
 	while (i < grp_size)
 	{
-		nums[i] = *(int *)node->content;
+		nums[i] = node->content;
 		node = node->prev;
 		i++;
 	}
@@ -190,6 +195,9 @@ void	sort_group(t_sort_state *ss, size_t grp_size)
 	i = 0;
 	while (i < grp_size)
 	{
+		stack_print(ss->from_s, 1);
+		stack_print(ss->to_s, 1);
+		print_moves(ss->moves);
 		// 1. Find the index of the number in the original stack relative to the top
 		relative_i = find_top_relative_index(ss->from_s, nums[i]);
 		// 2. Rotate or reverse rotate the stack to put the number on top
@@ -197,20 +205,21 @@ void	sort_group(t_sort_state *ss, size_t grp_size)
 		{
 			if (relative_i > 0)
 			{
-				append_action(R, ss->from_s->name, &ss->moves);
-				stack_rotate(ss->from_s);
+				append_action(RR, ss->from_s->name, &ss->moves);
+				stack_reverse_rotate(ss->from_s);
 				relative_i--;
 			}
 			else
 			{
-				append_action(RR, ss->from_s->name, &ss->moves);
-				stack_reverse_rotate(ss->from_s);
+				append_action(R, ss->from_s->name, &ss->moves);
+				stack_rotate(ss->from_s);
 				relative_i++;
 			}
 		}
 		// 3. Push the number to the destination stack
 		append_action(P, ss->from_s->name, &ss->moves);
 		stack_push(ss->to_s, ss->from_s);
+		i++;
 	}
 	free(nums);
 }

@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/22 17:23:35 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:02:46 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,13 @@ When calculating the group size, substract one for the first or last group.
 
 # include "libft.h"
 
-// typedef struct s_stack
-// {
-// 	int		*stack;
-// 	size_t	capacity;
-// 	size_t	taken;
-// 	size_t	top;
-// 	size_t	base;
-// 	char	name;
-// }	t_stack;
+typedef struct s_bi_list
+{
+	int					content;
+	struct s_bi_list	*next;
+	struct s_bi_list	*prev;
+}	t_bi_list;
+
 
 typedef struct s_stack
 {
@@ -113,5 +111,7 @@ void	stack_init_from_nums(t_stack *stack, char **numbers);
 void	stack_destroy(t_stack *stack);
 int		stack_is_sorted(t_stack *stack);
 char	*stack_to_string(t_stack *stack, int order);
+void	stack_print(t_stack *s, int order);
+void	print_moves(t_list *moves);
 
 #endif

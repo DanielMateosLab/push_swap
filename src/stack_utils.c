@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2024/09/22 17:20:07 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:19:19 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*stack_to_string(t_stack *stack, int order)
 		i = stack->top;
 	while (i)
 	{
-		num_str = ft_itoa(*(int *)i->content);
+		num_str = ft_itoa(i->content);
 		result = ft_strjoin(result, num_str);
 		free(num_str);
 		result = ft_strjoin(result, " ");
@@ -67,4 +67,39 @@ int	stack_is_sorted(t_stack *s)
 		i = i->prev;
 	}
 	return (1);
+}
+
+void	int_arr_print(int *arr)
+{
+	while (arr)
+	{
+		ft_printf("%d, ", *arr);
+		arr++;
+	}
+	ft_printf("\n");
+}
+
+void	print_move(void *content)
+{
+	t_action	*move;
+
+	move = (t_action *)content;
+	if (*move == RA)
+		ft_printf("RA, ");
+	else if (*move == RB)
+		ft_printf("RB, ");
+	else if (*move == RRA)
+		ft_printf("RRA, ");
+	else if (*move == RRB)
+		ft_printf("RRB, ");
+	else if (*move == PA)
+		ft_printf("PA, ");
+	else if (*move == PB)
+		ft_printf("PB, ");
+}
+
+void	print_moves(t_list *moves)
+{
+	ft_lstiter(moves, print_move);
+	ft_printf("\n");
 }
