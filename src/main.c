@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/20 17:39:12 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/20 18:05:53 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,8 +268,8 @@ t_list	*merge_sort(t_stack *a, t_stack *b, t_list *moves)
 	{
 		merge_groups_adjusting_grp_size(&ss, grp_size);
 		grp_size *= 2;
-		if (grp_size > ss.from_s->size)
-			grp_size = ss.from_s->size;
+		if (grp_size > ss.to_s->size)
+			grp_size = ss.to_s->size;
 		if (ss.uneven_pos != 0)
 			ss.uneven_pos *= -1;
 		tmp_stack = ss.from_s;
