@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/20 18:05:53 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/23 22:03:24 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ void	merge_groups_adjusting_grp_size(t_sort_state *ss, size_t grp_size)
 	}
 }
 
-void	init_sort_state(t_sort_state *ss, t_stack *a, t_stack *b, t_list *moves)
+void	init_sort_state(t_sort_state *ss, t_stack *a, t_stack *b)
 {
 	if (a->size % 2 == 0)
 		ss->uneven_pos = 0;
@@ -253,16 +253,16 @@ void	init_sort_state(t_sort_state *ss, t_stack *a, t_stack *b, t_list *moves)
 	ss->from_s = a;
 	ss->to_s = b;
 	ss->sort_order = 1;
-	ss->moves = moves;
+	ss->moves = NULL;
 }
 
-t_list	*merge_sort(t_stack *a, t_stack *b, t_list *moves)
+t_list	*merge_sort(t_stack *a, t_stack *b)
 {
 	t_sort_state	ss;
 	t_stack			*tmp_stack;
 	size_t			grp_size;
 
-	init_sort_state(&ss, a, b, moves);
+	init_sort_state(&ss, a, b);
 	grp_size = 2;
 	while (!stack_is_sorted(ss.from_s))
 	{
@@ -294,7 +294,10 @@ int	main(int argc, char **argv)
 	a.name = 'a';
 	b.name = 'b';
 	moves = NULL;
-	moves = merge_sort(&a, &b, moves);
+	moves = merge_sort(&a, &b);
+	print_moves(moves);
+	ft_lstclear(&moves, free);
 	stack_destroy(&a);
 	stack_destroy(&b);
+	return (EXIT_SUCCESS);
 }
