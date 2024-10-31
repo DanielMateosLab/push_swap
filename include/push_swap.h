@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/20 17:02:46 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/31 21:57:36 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ When calculating the group size, substract one for the first or last group.
 26 17 38 5
 358 1267
 ...
+*/
+
+/*
+DEAL WITH STACK ORDER:
+- we assume the stack order is always the same as the input order.
+- First argument is the top of the stack.
+- First argument should be the smallest.
 */
 
 #ifndef PUSH_SWAP_H
@@ -83,7 +90,6 @@ typedef enum e_action
 
 typedef struct s_sort_state
 {
-	int				uneven_pos;
 	t_stack			*from_s;
 	t_stack			*to_s;
 	int				sort_order;
@@ -113,5 +119,9 @@ int		stack_is_sorted(t_stack *stack);
 char	*stack_to_string(t_stack *stack, int order);
 void	stack_print(t_stack *s, int order);
 void	print_moves(t_list *moves);
+int		*stack_to_array(t_stack *stack, int order);
+void	reverse_array(int *arr, size_t len);
+void	int_arr_print(int *arr, size_t len);
+void	print_moves_count(t_list *moves);
 
 #endif

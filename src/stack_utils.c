@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/20 17:19:19 by damateos         ###   ########.fr       */
+/*   Updated: 2024/10/31 21:58:01 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*stack_to_string(t_stack *stack, int order)
 
 	result = ft_strdup("");
 	if (order == 1)
-		i = stack->base;
-	else
 		i = stack->top;
+	else
+		i = stack->base;
 	while (i)
 	{
 		num_str = ft_itoa(i->content);
@@ -30,9 +30,9 @@ char	*stack_to_string(t_stack *stack, int order)
 		free(num_str);
 		result = ft_strjoin(result, " ");
 		if (order == 1)
-			i = i->next;
-		else
 			i = i->prev;
+		else
+			i = i->next;
 	}
 	return (result);
 }
@@ -69,12 +69,15 @@ int	stack_is_sorted(t_stack *s)
 	return (1);
 }
 
-void	int_arr_print(int *arr)
+void	int_arr_print(int *arr, size_t len)
 {
-	while (arr)
+	size_t	i;
+
+	i = 0;
+	while (i < len)
 	{
-		ft_printf("%d, ", *arr);
-		arr++;
+		ft_printf("%d ", arr[i]);
+		i++;
 	}
 	ft_printf("\n");
 }
@@ -85,21 +88,34 @@ void	print_move(void *content)
 
 	move = (t_action *)content;
 	if (*move == RA)
-		ft_printf("RA, ");
+		ft_printf("RA ");
 	else if (*move == RB)
-		ft_printf("RB, ");
+		ft_printf("RB ");
 	else if (*move == RRA)
-		ft_printf("RRA, ");
+		ft_printf("RRA ");
 	else if (*move == RRB)
-		ft_printf("RRB, ");
+		ft_printf("RRB ");
 	else if (*move == PA)
-		ft_printf("PA, ");
+		ft_printf("PA ");
 	else if (*move == PB)
-		ft_printf("PB, ");
+		ft_printf("PB ");
 }
 
 void	print_moves(t_list *moves)
 {
 	ft_lstiter(moves, print_move);
 	ft_printf("\n");
+}
+
+void	print_moves_count(t_list *moves)
+{
+	size_t	count;
+
+	count = 0;
+	while (moves)
+	{
+		count++;
+		moves = moves->next;
+	}
+	ft_printf("moves count: %d\n", (int)count);
 }
