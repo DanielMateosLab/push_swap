@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/30 15:07:59 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/30 15:13:14 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ void	reverse_array(int *arr, size_t len);
 void	int_arr_print(int *arr, size_t len);
 void	print_moves_count(t_list *moves);
 int		parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack);
+t_list	*append_action(t_generic_action action, char from_name, t_list **moves);
 
 #endif
