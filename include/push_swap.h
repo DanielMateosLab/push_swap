@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/31 21:57:36 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/30 15:07:59 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,6 @@ int		*stack_to_array(t_stack *stack, int order);
 void	reverse_array(int *arr, size_t len);
 void	int_arr_print(int *arr, size_t len);
 void	print_moves_count(t_list *moves);
+int		parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack);
 
 #endif
