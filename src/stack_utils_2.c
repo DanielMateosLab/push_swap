@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:55:07 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/31 20:58:22 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/30 18:30:05 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,4 @@ void	ft_swap(int *a, int *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
-}
-
-void	reverse_array(int *arr, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len / 2)
-	{
-		ft_swap(&arr[i], &arr[len - i - 1]);
-		i++;
-	}
 }

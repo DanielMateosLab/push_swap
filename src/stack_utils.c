@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2024/10/31 21:58:01 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/30 18:27:39 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,6 @@ int	stack_is_sorted(t_stack *s)
 		i = i->prev;
 	}
 	return (1);
-}
-
-void	int_arr_print(int *arr, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		ft_printf("%d ", arr[i]);
-		i++;
-	}
-	ft_printf("\n");
 }
 
 void	print_move(void *content)
