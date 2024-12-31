@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/30 15:12:21 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/31 12:50:04 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void move_stack(t_sort_state *ss, int *arr, size_t len)
 
 	i = 0;
 	if (ss->sort_order == -1)
-		reverse_array(arr, len);
+		ft_int_arr_reverse(arr, len);
 	while (i < len)
 	{
 		// 1. Find the index of the number in the original stack relative to the top

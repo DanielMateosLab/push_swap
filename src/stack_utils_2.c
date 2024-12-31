@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:55:07 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/30 18:30:05 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/31 12:48:36 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,4 @@ int	*stack_to_array(t_stack *stack, int order)
 		j++;
 	}
 	return (array);
-}
-
-void	ft_swap(int *a, int *b)
-{
-	int	temp;
-
-	temp = *a;
-	*a = *b;
-	*b = temp;
 }

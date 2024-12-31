@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/30 18:28:23 by damateos         ###   ########.fr       */
+/*   Updated: 2024/12/31 12:49:53 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ char	*stack_to_string(t_stack *stack, int order);
 void	stack_print(t_stack *s, int order);
 void	print_moves(t_list *moves);
 int		*stack_to_array(t_stack *stack, int order);
-void	reverse_array(int *arr, size_t len);
 void	print_moves_count(t_list *moves);
 int		parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack);
 t_list	*append_action(t_generic_action action, char from_name, t_list **moves);
+int		*get_index_equivalent_arr(int *arr, size_t len);
 
 #endif
