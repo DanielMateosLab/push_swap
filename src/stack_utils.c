@@ -6,12 +6,15 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/30 18:27:39 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/01 22:45:55 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+/** Returns a string representation of the stack.
+ * Order 1 prints from base to top.
+ * Order -1 prints from top to base. */
 char	*stack_to_string(t_stack *stack, int order)
 {
 	char			*result;
@@ -19,20 +22,21 @@ char	*stack_to_string(t_stack *stack, int order)
 	char			*num_str;
 
 	result = ft_strdup("");
-	if (order == 1)
+	if (order == -1)
 		i = stack->top;
 	else
 		i = stack->base;
 	while (i)
 	{
 		num_str = ft_itoa(i->content);
-		result = ft_strjoin(result, num_str);
+		ft_strjoin_mut(&result, num_str);
 		free(num_str);
-		result = ft_strjoin(result, " ");
-		if (order == 1)
+		if (order == -1)
 			i = i->prev;
 		else
 			i = i->next;
+		if (i)
+			ft_strjoin_mut(&result, " ");
 	}
 	return (result);
 }
