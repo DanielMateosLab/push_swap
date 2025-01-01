@@ -21,3 +21,26 @@ The solution is based on the Radix Sort algorithm. High level idea:
 -   Early exit: if we don't need to ush numbers to B in a pass, we can skip the pass.
 -   For each pass, we don't care the order of pushing to B, so we can use the cheapest rotation for each target number (ra or rra).
 -   After all `0` bit numbers are pushed to B, we can use `rra` to get the original order if it's more efficient.
+
+## Notes about ordering and printing of stacks
+
+-   When printing the stacks, we print the top of the stack first.
+
+    ```
+    4 3 2 1
+    ^
+    Top
+    ```
+
+    ```
+    4 > Top
+    3
+    2
+    1
+    ```
+
+-   The stack should be ordered so the top is the smallest number.
+
+    `4 3 2 1` -> `1 2 3 4`
+
+-   The top is the 'last' number in the stack
