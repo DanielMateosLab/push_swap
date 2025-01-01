@@ -6,13 +6,13 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 15:36:51 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/31 13:33:00 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/01 23:02:30 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	*create_descending_sorted_arr(int *arr, size_t len)
+int	*create_sorted_arr(int *arr, size_t len)
 {
 	int		*sorted_arr;
 	size_t	i;
@@ -21,7 +21,6 @@ int	*create_descending_sorted_arr(int *arr, size_t len)
 	if (!sorted_arr)
 		return (NULL);
 	ft_quick_sort(sorted_arr, 0, len - 1);
-	ft_int_arr_reverse(sorted_arr, len);
 	return (sorted_arr);
 }
 
@@ -49,7 +48,7 @@ t_hashmap	*create_number_to_index_map(int *arr, size_t len)
 }
 
 /** For an int array, returns array where each number is replaced by the index
- * of that number in the original array sorted in descending order. */
+ * of that number in the original array sorted in ascending order. */
 int	*get_index_equivalent_arr(int *arr, size_t len)
 {
 	t_hashmap	*hm;
@@ -57,7 +56,7 @@ int	*get_index_equivalent_arr(int *arr, size_t len)
 	int			i;
 	char		*key;
 
-	temp_arr = create_descending_sorted_arr(arr, len);
+	temp_arr = create_sorted_arr(arr, len);
 	if (!temp_arr)
 		return (NULL);
 	hm = create_number_to_index_map(temp_arr, len);
@@ -91,5 +90,3 @@ int	*char_arr_to_int_arr(char **arr, size_t len)
 	}
 	return (int_arr);
 }
-
-// TODO: test

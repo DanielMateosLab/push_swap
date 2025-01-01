@@ -8,7 +8,7 @@ extern "C" {
 
 TEST(IndexEquivalentArrTest, BasicArray) {
     int arr[] = {4, 2, 1, 3};
-    int expected[] = {0, 2, 3, 1};
+    int expected[] = {3, 1, 0, 2};
     int* result = get_index_equivalent_arr(arr, 4);
 
     ASSERT_NE(result, nullptr);
@@ -30,7 +30,7 @@ TEST(IndexEquivalentArrTest, SingleElement) {
 
 TEST(IndexEquivalentArrTest, NegativeNumbers) {
     int arr[] = {-3, -1, -4, -2};
-    int expected[] = {2, 0, 3, 1};
+    int expected[] = {1, 3, 0, 2};
     int* result = get_index_equivalent_arr(arr, 4);
 
     ASSERT_NE(result, nullptr);
