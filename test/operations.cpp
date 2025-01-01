@@ -119,14 +119,14 @@ TEST_F(StackTest, PushFromTwoToEmpty) {
 	stack_init_from_nums(&a, (char **)numbers);
 	stack_push(&b, &a);
 
-	ASSERT_EQ(*(int *)a.top->content, 2);
+	ASSERT_EQ(a.top->content, 2);
 	ASSERT_EQ(a.top->prev, (void *)NULL);
 	ASSERT_EQ(a.top->next, (void *)NULL);
 	ASSERT_EQ(a.base->prev, (void *)NULL);
 	ASSERT_EQ(a.base->next, (void *)NULL);
 	ASSERT_EQ(a.size, (size_t)1);
 
-	ASSERT_EQ(*(int *)b.top->content, 1);
+	ASSERT_EQ(b.top->content, 1);
 	ASSERT_EQ(b.top->prev, (void *)NULL);
 	ASSERT_EQ(b.top->next, (void *)NULL);
 	ASSERT_EQ(b.base->prev, (void *)NULL);
@@ -146,7 +146,7 @@ TEST_F(StackTest, PushFromOneToEmpty) {
     ASSERT_EQ(a.base, (void *)NULL);
     ASSERT_EQ(a.size, (size_t)0);
 
-    ASSERT_EQ(*(int *)b.top->content, 1);
+    ASSERT_EQ(b.top->content, 1);
     ASSERT_EQ(b.top->prev, (void *)NULL);
     ASSERT_EQ(b.top->next, (void *)NULL);
     ASSERT_EQ(b.base->prev, (void *)NULL);
@@ -162,18 +162,21 @@ TEST_F(StackTest, PushFromFilledToFilled) {
 
     stack_init_from_nums(&a, (char **)a_numbers);
     stack_init_from_nums(&b, (char **)b_numbers);
-    stack_push(&b, &a); // B will be 3 4 2
+    stack_push(&b, &a); // B will be 1 3 4
 
 	ASSERT_EQ(a.size, (size_t)1);
 	ASSERT_EQ(b.size, (size_t)3);
 
-	ASSERT_EQ(*(int *)b.base->content, 3);
-	ASSERT_EQ(*(int *)b.base->next->content, 4);
-	ASSERT_EQ(b.base->prev, (void *)NULL);
-	ASSERT_EQ(*(int *)b.base->next->next->content, 2);
+	ASSERT_EQ(a.base->content, 2);
+	ASSERT_EQ(a.top->content, 2);
+
+	ASSERT_EQ(b.top->content, 1);
+	ASSERT_EQ(b.base->content, 4);
+	ASSERT_EQ(b.base->next->content, 3);
+	ASSERT_EQ(b.base->next->next->content, 1);
 	ASSERT_EQ(b.base->next->next->next, (void *)NULL);
+	ASSERT_EQ(b.base->prev, (void *)NULL);
 	ASSERT_EQ(b.base->next->prev, b.base);
-	ASSERT_EQ(*(int *)b.top->content, 2);
 	ASSERT_EQ(b.top->next, (void *)NULL);
 	ASSERT_EQ(b.top->prev, b.base->next);
 
@@ -245,7 +248,7 @@ TEST_F(StackTest, Rotate) {
 	free(str_stack);
 
 	str_stack = stack_to_string(&a, -1);
-	ASSERT_STREQ(str_stack, "2 1 3");
+	ASSERT_STREQ(str_stack, "2 3 1");
 	free(str_stack);
 
 	stack_rotate(&a);
