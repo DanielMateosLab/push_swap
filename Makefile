@@ -6,7 +6,8 @@ BUILD_DIR = build
 TEST_OUT = test/build
 
 SRCS = src/main.c src/stack_lifecycle.c src/stack_operations.c src/stack_utils.c \
-		src/stack_utils_2.c src/args_parsing.c src/actions.c src/index_equivalent_arr.c
+		src/stack_utils_2.c src/args_parsing.c src/actions.c src/index_equivalent_arr.c \
+		src/print_utils.c
 OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
 HEADER = include/push_swap.h
 
