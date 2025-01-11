@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/11 15:00:15 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:06:13 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,39 @@ void	stack_push_all(t_stack *a, t_stack *b, t_list *moves)
 	}
 }
 
+void	radix_sort(t_stack *a, t_stack *b, t_list *moves)
+{
+	int		bit_position;
+	int		i;
+	int		size;
+	int		num;
+
+	bit_position = 0;
+	while (!stack_is_sorted(a))
+	{
+		size = a->size;
+		i = 0;
+		while (i < size)
+		{
+			num = a->top->content;
+			if ((num >> bit_position) & 1)
+			{
+				append_action(R, 'a', &moves);
+				stack_rotate(a);
+			}
+			else
+			{
+				append_action(P, 'a', &moves);
+				stack_push(b, a);
+			}
+			i++;
+		}
+		stack_push_all(a, b, moves);
+		bit_position++;
+		stack_print(a, -1);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_stack		a;
@@ -60,6 +93,8 @@ int	main(int argc, char **argv)
 	a.name = 'a';
 	b.name = 'b';
 	moves = NULL;
+	if (a.size > 1 && !stack_is_sorted(&a))
+		radix_sort(&a, &b, moves);
 	if (a.size > 1)
 	{
 		print_moves(moves);
