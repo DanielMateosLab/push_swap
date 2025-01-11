@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/11 14:27:00 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:04:35 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,6 @@ typedef enum e_action
 	PA,
 	PB
 }	t_action;
-
-typedef struct s_sort_state
-{
-	t_stack			*from_s;
-	t_stack			*to_s;
-	int				sort_order;
-	t_list			*moves;
-}	t_sort_state;
 
 /*
  * Swap the first two elements of the given stack.

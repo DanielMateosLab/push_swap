@@ -39,14 +39,6 @@ int	find_top_relative_index(t_stack *stack, int number)
 	return (to_next_i);
 }
 
-void	init_sort_state(t_sort_state *ss, t_stack *a, t_stack *b)
-{
-	ss->from_s = a;
-	ss->to_s = b;
-	ss->sort_order = 1; // Sort order 1 means the top is the smallest
-	ss->moves = NULL;
-}
-
 void	stack_push_all(t_stack *a, t_stack *b, t_list *moves)
 {
 	while (b->size)
