@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 15:36:51 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/01 23:02:30 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 14:26:43 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	*create_sorted_arr(int *arr, size_t len)
 {
 	int		*sorted_arr;
-	size_t	i;
 
 	sorted_arr = ft_int_arr_copy(arr, len);
 	if (!sorted_arr)
@@ -24,7 +23,7 @@ int	*create_sorted_arr(int *arr, size_t len)
 	return (sorted_arr);
 }
 
-t_hashmap	*create_number_to_index_map(int *arr, size_t len)
+t_hashmap	*create_number_to_index_map(int *arr, int len)
 {
 	t_hashmap	*hm;
 	int			i;
@@ -49,7 +48,7 @@ t_hashmap	*create_number_to_index_map(int *arr, size_t len)
 
 /** For an int array, returns array where each number is replaced by the index
  * of that number in the original array sorted in ascending order. */
-int	*get_index_equivalent_arr(int *arr, size_t len)
+int	*get_index_equivalent_arr(int *arr, int len)
 {
 	t_hashmap	*hm;
 	int			*temp_arr;

@@ -6,37 +6,9 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 13:43:49 by damateos          #+#    #+#             */
-/*   Updated: 2024/12/31 12:49:53 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 14:27:00 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-Sorting algorithm: use merge sort.
-- In each iteration we switch the ordering direction.
-- We order the groups from top of stack to bottom.
-- We use rotations and pushes to sort the groups. Swaps are not used.
-- Because we only push in one direction, push time complexity is constant.
-- Using a circular buffer, we can also achieve constant complexity for rotations.
-
-5 3 8 6 5 6 1 8
-18 56 68 35
-8563 8651
-13556688
---------------------------
-For uneven groups: register werther the uneven group is at the beginning or end.
-When calculating the group size, substract one for the first or last group.
-5 3 8 7 1 2 6
-26 17 38 5
-358 1267
-...
-*/
-
-/*
-DEAL WITH STACK ORDER:
-- we assume the stack order is always the same as the input order.
-- First argument is the top of the stack.
-- First argument should be the smallest.
-*/
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
@@ -113,7 +85,7 @@ void	stack_rotate(t_stack *stack);
  * Reverse rotate the stack, moving the last element to the first position.
  */
 void	stack_reverse_rotate(t_stack *stack);
-void	stack_init_from_nums(t_stack *stack, char **numbers);
+void	stack_init_from_nums(t_stack *stack, int *numbers, size_t len);
 void	stack_destroy(t_stack *stack);
 int		stack_is_sorted(t_stack *stack);
 char	*stack_to_string(t_stack *stack, int order);
@@ -123,6 +95,7 @@ int		*stack_to_array(t_stack *stack, int order);
 void	print_moves_count(t_list *moves);
 int		parse_arguments_and_create_stack(int argc, char **argv, t_stack *stack);
 t_list	*append_action(t_generic_action action, char from_name, t_list **moves);
-int		*get_index_equivalent_arr(int *arr, size_t len);
+int		*get_index_equivalent_arr(int *arr, int len);
+int		*char_arr_to_int_arr(char **arr, size_t len);
 
 #endif
