@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:01:16 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/01 22:45:55 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:28:52 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,6 @@ int	stack_is_sorted(t_stack *s)
 	while (i->prev)
 	{
 		if (i->content > i->prev->content)
-			break ;
-		i = i->prev;
-	}
-	i = s->top;
-	while (i->prev)
-	{
-		if (i->content < i->prev->content)
 			return (0);
 		i = i->prev;
 	}
