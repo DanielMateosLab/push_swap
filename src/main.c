@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/11 22:06:13 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:33:53 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,36 +48,41 @@ void	stack_push_all(t_stack *a, t_stack *b, t_list *moves)
 	}
 }
 
+void	process_bit_position(t_stack *a, t_stack *b, t_list *moves, int bit_pos)
+{
+	int	i;
+	int	size;
+	int	num;
+
+	size = a->size;
+	i = 0;
+	while (i < size)
+	{
+		num = a->top->content;
+		if ((num >> bit_pos) & 1)
+		{
+			append_action(R, 'a', &moves);
+			stack_rotate(a);
+		}
+		else
+		{
+			append_action(P, 'a', &moves);
+			stack_push(b, a);
+		}
+		i++;
+	}
+}
+
 void	radix_sort(t_stack *a, t_stack *b, t_list *moves)
 {
-	int		bit_position;
-	int		i;
-	int		size;
-	int		num;
+	int	bit_position;
 
 	bit_position = 0;
 	while (!stack_is_sorted(a))
 	{
-		size = a->size;
-		i = 0;
-		while (i < size)
-		{
-			num = a->top->content;
-			if ((num >> bit_position) & 1)
-			{
-				append_action(R, 'a', &moves);
-				stack_rotate(a);
-			}
-			else
-			{
-				append_action(P, 'a', &moves);
-				stack_push(b, a);
-			}
-			i++;
-		}
+		process_bit_position(a, b, moves, bit_position);
 		stack_push_all(a, b, moves);
 		bit_position++;
-		stack_print(a, -1);
 	}
 }
 
