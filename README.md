@@ -44,3 +44,10 @@ The solution is based on the Radix Sort algorithm. High level idea:
     `4 3 2 1` -> `1 2 3 4`
 
 -   The top is the 'last' number in the stack
+
+## Pseudocode implementation for radix sort
+
+```
+1. Check if the stack is sorted. Return if so.
+
+```
