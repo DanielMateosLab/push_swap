@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/11 22:33:53 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:45:26 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,17 @@ int	find_top_relative_index(t_stack *stack, int number)
 	return (to_next_i);
 }
 
-void	stack_push_all(t_stack *a, t_stack *b, t_list *moves)
+void	stack_push_all(t_stack *a, t_stack *b, t_list **moves)
 {
 	while (b->size)
 	{
-		append_action(P, 'b', &moves);
+		append_action(P, 'b', moves);
 		stack_push(a, b);
 	}
 }
 
-void	process_bit_position(t_stack *a, t_stack *b, t_list *moves, int bit_pos)
+void	process_bit_position(t_stack *a, t_stack *b,
+	t_list **moves, int bit_pos)
 {
 	int	i;
 	int	size;
@@ -61,29 +62,32 @@ void	process_bit_position(t_stack *a, t_stack *b, t_list *moves, int bit_pos)
 		num = a->top->content;
 		if ((num >> bit_pos) & 1)
 		{
-			append_action(R, 'a', &moves);
+			append_action(R, 'a', moves);
 			stack_rotate(a);
 		}
 		else
 		{
-			append_action(P, 'a', &moves);
+			append_action(P, 'a', moves);
 			stack_push(b, a);
 		}
 		i++;
 	}
 }
 
-void	radix_sort(t_stack *a, t_stack *b, t_list *moves)
+t_list	*radix_sort(t_stack *a, t_stack *b)
 {
-	int	bit_position;
+	int		bit_position;
+	t_list	*moves;
 
 	bit_position = 0;
+	moves = NULL;
 	while (!stack_is_sorted(a))
 	{
-		process_bit_position(a, b, moves, bit_position);
-		stack_push_all(a, b, moves);
+		process_bit_position(a, b, &moves, bit_position);
+		stack_push_all(a, b, &moves);
 		bit_position++;
 	}
+	return (moves);
 }
 
 int	main(int argc, char **argv)
@@ -99,7 +103,7 @@ int	main(int argc, char **argv)
 	b.name = 'b';
 	moves = NULL;
 	if (a.size > 1 && !stack_is_sorted(&a))
-		radix_sort(&a, &b, moves);
+		moves = radix_sort(&a, &b);
 	if (a.size > 1)
 	{
 		print_moves(moves);
