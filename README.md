@@ -20,6 +20,7 @@ The solution is based on the Radix Sort algorithm. High level idea:
 -   Instead of sorting the actual numbers, we sort the indices of the numbers in the sorted order. For example, if we are getting the numbers `1 89 2`, we sort them using the indices `0 2 1`. This guarantees we only need log2(n) bits to represent the numbers (and passes).
 -   Early exit: if we don't need to push numbers to B in a pass, we can skip the pass.
 -   For each pass, we don't care the order of pushing to B, so we can use the cheapest rotation for each target number (ra or rra).
+    -   A possible improvement is doing a lookahead of N numbers and determining the best path possible to push all of them. Note that this has caveats as you must decide if start pushing from the top or the bottom of the stack.
 -   After all `0` bit numbers are pushed to B, we can use `rra` to get the original order if it's more efficient.
 
 ## Notes about ordering and printing of stacks
@@ -44,10 +45,3 @@ The solution is based on the Radix Sort algorithm. High level idea:
     `4 3 2 1` -> `1 2 3 4`
 
 -   The top is the 'last' number in the stack
-
-## Pseudocode implementation for radix sort
-
-```
-1. Check if the stack is sorted. Return if so.
-
-```
