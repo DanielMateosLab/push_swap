@@ -6,7 +6,7 @@
 /*   By: damateos <damateos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 16:32:52 by damateos          #+#    #+#             */
-/*   Updated: 2025/01/11 22:45:26 by damateos         ###   ########.fr       */
+/*   Updated: 2025/01/12 22:39:27 by damateos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,26 @@ void	stack_push_all(t_stack *a, t_stack *b, t_list **moves)
 	}
 }
 
+int	all_bits_same_at_position(t_stack *stack, int bit_pos)
+{
+	t_bi_list	*current;
+	int			first_bit;
+	int			current_bit;
+
+	if (!stack->size)
+		return (1);
+	current = stack->top;
+	first_bit = (current->content >> bit_pos) & 1;
+	while (current)
+	{
+		current_bit = (current->content >> bit_pos) & 1;
+		if (current_bit != first_bit)
+			return (0);
+		current = current->prev;
+	}
+	return (1);
+}
+
 void	process_bit_position(t_stack *a, t_stack *b,
 	t_list **moves, int bit_pos)
 {
@@ -55,8 +75,10 @@ void	process_bit_position(t_stack *a, t_stack *b,
 	int	size;
 	int	num;
 
-	size = a->size;
+	if (all_bits_same_at_position(a, bit_pos))
+		return ;
 	i = 0;
+	size = a->size;
 	while (i < size)
 	{
 		num = a->top->content;
